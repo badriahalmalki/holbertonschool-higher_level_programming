@@ -108,7 +108,7 @@ class Square:
 
         # Print vertical offset
         for _ in range(self.__position[1]):
-            print("")
+            print()
 
         # Print each row of the square
         for _ in range(self.__size):
