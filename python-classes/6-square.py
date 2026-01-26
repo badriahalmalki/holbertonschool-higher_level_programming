@@ -103,7 +103,7 @@ class Square:
         If size is 0, prints an empty line.
         """
         if self.__size == 0:
-            print("")
+            print()
             return
 
         # Print vertical offset
