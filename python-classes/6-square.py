@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-This module defines the Square class with size and position attributes,
-including validation and methods to compute area and print the square.
+This module defines the Square class, which supports size validation,
+position-based printing, and area computation.
 """
 
 
@@ -77,12 +77,12 @@ class Square:
         Raises:
             TypeError: If value is not a tuple of 2 positive integers.
         """
-        if (
-            not isinstance(value, tuple) or
-            len(value) != 2 or
-            not all(isinstance(num, int) for num in value) or
-            not all(num >= 0 for num in value)
-        ):
+        if (not isinstance(value, tuple) or
+                len(value) != 2 or
+                not isinstance(value[0], int) or
+                not isinstance(value[1], int) or
+                value[0] < 0 or
+                value[1] < 0):
             raise TypeError("position must be a tuple of 2 positive integers")
 
         self.__position = value
@@ -103,13 +103,11 @@ class Square:
         If size is 0, prints an empty line.
         """
         if self.__size == 0:
-            print()
+            print("")
             return
 
-        # Print vertical offset
         for _ in range(self.__position[1]):
-            print()
+            print("")
 
-        # Print each row of the square
         for _ in range(self.__size):
             print(" " * self.__position[0] + "#" * self.__size)
