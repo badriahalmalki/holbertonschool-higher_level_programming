@@ -5,6 +5,7 @@ The file is created if it doesn't exist and overwritten if it does.
 """
 
 
+
 def write_file(filename="", text=""):
     """
     Write a string to a text file (UTF-8) and return the number of characters written.
