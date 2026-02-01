@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This script adds command-line arguments to a list and saves it
+This script adds command-line arguments to a list and saves them
 to a JSON file named add_item.json.
 """
 
