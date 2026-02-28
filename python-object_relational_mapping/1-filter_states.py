@@ -11,7 +11,8 @@ import MySQLdb
 
 
 def fetch_states_starting_with_upper_n(user, password, db_name):
-    """Return rows from states where name starts with uppercase 'N', ordered by id."""
+    """Return rows from states where name starts with uppercase 'N',
+    ordered by id."""
     db = MySQLdb.connect(host="localhost",
                          port=3306,
                          user=user,
