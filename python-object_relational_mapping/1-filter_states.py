@@ -12,11 +12,16 @@ import MySQLdb
 
 def fetch_states_starting_with_upper_n(user, password, db_name):
     """Return rows from states where name starts with uppercase 'N', ordered by id."""
-    db = MySQLdb.connect(host="localhost", port=3306,
-                         user=user, passwd=password, db=db_name)
+    db = MySQLdb.connect(host="localhost",
+                         port=3306,
+                         user=user,
+                         passwd=password,
+                         db=db_name)
     cur = db.cursor()
-    cur.execute("SELECT * FROM states WHERE BINARY name LIKE %s ORDER BY id ASC",
-                ("N%",))
+    cur.execute(
+        "SELECT * FROM states WHERE BINARY name LIKE %s ORDER BY id ASC",
+        ("N%",)
+    )
     rows = cur.fetchall()
     cur.close()
     db.close()
