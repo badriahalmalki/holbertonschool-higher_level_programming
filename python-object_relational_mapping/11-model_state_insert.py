@@ -1,12 +1,8 @@
 #!/usr/bin/python3
-"""List all State objects from the hbtn_0e_6_usa database.
+"""Add the State object 'Louisiana' to the hbtn_0e_6_usa database.
 
-Connects to a local MySQL server and prints all State objects stored in the
-database in the format "<id>: <name>", ordered by states.id in ascending
-order.
-
-Usage:
-    ./7-model_state_fetch_all.py <mysql_user> <mysql_password> <database_name>
+Connects to a local MySQL server and inserts a new State object with the
+name 'Louisiana'. After creation, prints the new state's id.
 """
 
 import sys
@@ -17,28 +13,32 @@ from sqlalchemy.orm import sessionmaker
 from model_state import Base, State
 
 
-def fetch_all_states(user, password, db_name):
-    """Return a list of State objects ordered by id."""
-    engine = create_engine(
-        'mysql+mysqldb://{}:{}@localhost/{}'.format(user, password, db_name),
-        pool_pre_ping=True
-    )
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    states = session.query(State).order_by(State.id).all()
-    session.close()
-    return states
-
-
 def main():
-    """Parse CLI args and print each State as 'id: name'."""
+    """Create a new State object and print its id."""
     if len(sys.argv) != 4:
         return
+
     user = sys.argv[1]
     password = sys.argv[2]
     db_name = sys.argv[3]
-    for state in fetch_all_states(user, password, db_name):
-        print("{}: {}".format(state.id, state.name))
+
+    engine = create_engine(
+        'mysql+mysqldb://{}:{}@localhost/{}'.format(
+            user, password, db_name
+        ),
+        pool_pre_ping=True
+    )
+
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    new_state = State(name="Louisiana")
+    session.add(new_state)
+    session.commit()
+
+    print(new_state.id)
+
+    session.close()
 
 
 if __name__ == "__main__":
