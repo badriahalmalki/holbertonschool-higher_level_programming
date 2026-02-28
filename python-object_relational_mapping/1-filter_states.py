@@ -1,36 +1,37 @@
 #!/usr/bin/python3
-"""
-Lists all states with a name starting with N (uppercase) from the database
-hbtn_0e_0_usa.
+"""List states with a name starting with N from hbtn_0e_0_usa.
 
-Usage:
-    ./1-filter_states.py <mysql username> <mysql password> <database name>
-
-Requirements:
-- Use MySQLdb
-- Connect to localhost on port 3306
-- Print rows sorted by states.id
-- Match only names starting with uppercase 'N'
-- Do not execute code on import
+Connect to a local MySQL server and print each row from the states table
+where the name starts with an uppercase N. Rows are ordered by id.
 """
+
 import sys
+
 import MySQLdb
 
 
-def main():
-    user = sys.argv[1]
-    passwd = sys.argv[2]
-    db_name = sys.argv[3]
-
-    db = MySQLdb.connect(host="localhost", port=3306, user=user, passwd=passwd,
-                         db=db_name)
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM states WHERE name LIKE BINARY %s ORDER BY id",
-                   ("N%",))
-    for row in cursor.fetchall():
-        print(row)
-    cursor.close()
+def fetch_states_starting_with_n(user, password, db_name):
+    """Return rows from states where name starts with 'N', ordered by id."""
+    db = MySQLdb.connect(host="localhost", port=3306,
+                         user=user, passwd=password, db=db_name)
+    cur = db.cursor()
+    cur.execute("SELECT * FROM states WHERE name LIKE %s ORDER BY id ASC",
+                ("N%",))
+    rows = cur.fetchall()
+    cur.close()
     db.close()
+    return rows
+
+
+def main():
+    """Read CLI args and print each matching state row as a tuple."""
+    if len(sys.argv) != 4:
+        return
+    user = sys.argv[1]
+    password = sys.argv[2]
+    db_name = sys.argv[3]
+    for row in fetch_states_starting_with_n(user, password, db_name):
+        print(row)
 
 
 if __name__ == "__main__":
