@@ -2,8 +2,8 @@
 """Filter states by name from the hbtn_0e_0_usa database.
 
 The script connects to a local MySQL server and prints each row from the
-states table where the name matches the provided argument. Rows are ordered
-by id in ascending order.
+states table where the name matches the provided argument exactly and
+case-sensitively. Rows are ordered by id in ascending order.
 """
 
 import sys
@@ -12,15 +12,18 @@ import MySQLdb
 
 
 def fetch_states_by_name(user, password, db_name, state_name):
-    """Return rows from states where name matches state_name ordered by id."""
+    """Return rows from states where name matches state_name
+    (case-sensitive)."""
     db = MySQLdb.connect(host="localhost",
                          port=3306,
                          user=user,
                          passwd=password,
                          db=db_name)
     cur = db.cursor()
-    query = ("SELECT * FROM states WHERE name = '{}' ORDER BY id ASC"
-             .format(state_name))
+    # Escape single quotes in state_name to avoid SQL syntax errors.
+    safe_name = state_name.replace("'", "\\'")
+    query = ("SELECT * FROM states WHERE BINARY name = '{}' "
+             "ORDER BY id ASC".format(safe_name))
     cur.execute(query)
     rows = cur.fetchall()
     cur.close()
@@ -30,7 +33,7 @@ def fetch_states_by_name(user, password, db_name, state_name):
 
 def main():
     """Read CLI args and print each matching state row as a tuple."""
-    if len(sys.argv) != 4 and len(sys.argv) != 5:
+    if len(sys.argv) != 5:
         return
     user = sys.argv[1]
     password = sys.argv[2]
