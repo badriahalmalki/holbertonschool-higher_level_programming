@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 """List all states from the hbtn_0e_0_usa database.
 
-The script connects to a local MySQL server and prints each row from the
-states table ordered by id in ascending order.
+Connect to a local MySQL server and print each row from the states table
+ordered by id in ascending order.
 """
 
-import MySQLdb
 import sys
+
+import MySQLdb
 
 
 def fetch_states(user, password, db_name):
-    """Connect to MySQL and return a tuple list of rows from states ordered by id."""
+    """Connect to MySQL and return rows from states ordered by id."""
     db = MySQLdb.connect(host="localhost", port=3306,
                          user=user, passwd=password, db=db_name)
     cur = db.cursor()
